@@ -8,6 +8,7 @@ const Assessment = require("../models/assessment");
 
 router.post("/create-assessment", (req, res, next) => {
   let newAssessment = new Assessment({
+    createdBy: req.body.createdBy,
     testCoverage: req.body.testCoverage,
     changeTypes: req.body.changeTypes,
     timeAvailabilityEventInfo: req.body.timeAvailabilityEventInfo,
@@ -30,8 +31,33 @@ router.post("/create-assessment", (req, res, next) => {
     administratorCount: req.body.administratorCount,
     onboardingLeadTime: req.body.onboardingLeadTime
   });
+
+  Assessment.addAssessment(newAssessment, (err, user) => {
+    if (err) {
+      res.json({ success: false, msg: "failed to submit Assessment" });
+    } else {
+      res.json({ success: true, msg: "Assessment completed" });
+    }
+  });
 });
-router.delete("/delete-assessment", (req, res, next) => {});
-router.post("/view-assessment", (req, res, next) => {});
+
+// router.delete("/delete-assessment", (req, res, next) => {
+//   var id = req.params.id;
+//   Assessment.findOneAndDelete({ _id: id }, function(err, data) {
+//     if (err) {
+//       console.log("error");
+//     } else {
+//       res.json({ success: true, msg: "delete sucessful" });
+//     }
+//   });
+// });
+
+router.get("/view-assessment", (req, res, next) => {
+  var createdBy = req.query.createdBy;
+  Assessment.find({ createdBy: createdBy }, function(err, data) {
+    if (err) console.log("error");
+    res.json(data);
+  });
+});
 
 module.exports = router;
