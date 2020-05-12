@@ -92,8 +92,11 @@ const AssessmentSchema = mongoose.Schema(
     onboardingLeadTime: {
       type: Number,
       required: true
-    }
+    },
+    createdAt: {type: Date},
+
   },
+  { timestamps: { createdAt: "created_at" } },
   { collection: "assessments" }
 );
 
@@ -110,11 +113,10 @@ module.exports.getAssessmentByUser = function(createdBy, callback) {
   const query = { createdBy: createdBy };
   Assessment.find(query, callback);
 
-    // Assessment.find({createdBy: 'janedoe@email.com'}, function(err, data) {
-    // if (err) console.log(err);
-    // res.json(data)
+  // Assessment.find({createdBy: 'janedoe@email.com'}, function(err, data) {
+  // if (err) console.log(err);
+  // res.json(data)
   // });
 };
 
-module.exports.deleteAssessment = function(createdBy, callback) {
-};
+module.exports.deleteAssessment = function(createdBy, callback) {};
